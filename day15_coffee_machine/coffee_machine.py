@@ -44,7 +44,7 @@ def check_resources(beverage, resources):
     return resources_insufficient
 
 
-def validate_coins(beverage, coins):
+def validate_coins(beverage):
     beverage_cost = MENU[beverage]["cost"]
     print(f"A {beverage} costs {beverage_cost}. Please insert coins.\n")
     sufficient_payment = False
@@ -64,13 +64,13 @@ def validate_coins(beverage, coins):
         payment_received = {"quarters": quarters*.25,
                             "dimes": dimes*.1,
                             "nickles": nickles*.05,
-                            "pennies", pennies*.01}
+                            "pennies": pennies*.01}
         if sum(payment_received.values()) >= beverage_cost:
             sufficient_payment = True
         else:
             try_again = input("Sorry, that's not enough money. Money refunded.\n" +
                               "Would you like to try again? y(es)/n(o)").lower()
-            from coin in payment_received:
+            for coin in payment_received:
                 payment_received[coin] = 0
 
     return sum(payment_received.values())
@@ -89,32 +89,32 @@ resources_available = {
     "milk": 200,
     "coffee": 100,
 }
-    
-# and the coins are emptied, considering there is no persistence
-coins_received = 0
 
-machineIsOn = True:
+# and the coins are emptied, considering there is no persistence
+total_coins_received = 0
+
+machineIsOn = True
 
 while machineIsOn:
 
     customer_order = ""
-    while customer_order not in MENU.keys() or 
-          customer_order not in ("off", "report"):
+    while customer_order not in MENU.keys() or customer_order not in ("off", "report"):
         prompt_string = "What would you like?\n"
         for item in MENU:
-            prompt_string += f"{item["ingredients"].keys()[0].title()}: " +
-                             f"${item.get("cost")}\n"
+            menu_item = item.title()
+            item_cost = MENU[item].get("cost")
+            prompt_string += f"{menu_item}: ${item_cost}"
         customer_order = input(prompt_string).lower()
     
     if customer_order == "off":
         machineIsOn = False
     elif customer_order == "report":
-        generate_report(resources_available, coins_received)
-    elif check_resources(customer_order, resources_available)
+        generate_report(resources_available, total_coins_received)
+    elif check_resources(customer_order, resources_available):
         customer_payment = validate_coins(customer_order)
         if customer_payment > 0:
             # make customer's order and decrement resources used
-            resources = make_order(customer_order, resources)
+            resources_available = make_order(customer_order, resources_available)
+            total_coins_received += customer_payment
 
 
-#TODO: Make coffee if sufficient resources and coinage, decrement resources
