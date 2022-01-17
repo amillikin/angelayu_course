@@ -109,8 +109,3 @@ while still_playing:
   else:
     print("Well, in that case, have a good day.")
     still_playing = False
-
-
-
-
-
