@@ -1,3 +1,5 @@
+import os
+
 MENU = {
     "espresso": {
         "ingredients": {
@@ -32,16 +34,21 @@ def generate_report(resources, coins_received):
           f"Money: ${coins_received}")
 
 
-def check_resources(beverage, resources):
-    resources_insufficient = False
+def check_sufficient_resources(beverage, resources):
+    resources_sufficient = True
     insufficient_resources = ""
-    for ingredient in MENU[beverage]["ingredients"].keys():
-        if resources[ingredient] > MENU[beverage]["ingredients"][ingredient]:
-            resources_insufficient = True
-            insufficient_resources += f", {ingredient}"
-    if resources_insufficient:
+    for ingredient in MENU[beverage]["ingredients"]:
+        amount_needed = MENU[beverage]["ingredients"][ingredient]
+        amount_in_stock = resources[ingredient]
+        if amount_needed > amount_in_stock:
+            resources_sufficient = False
+            if insufficient_resources == "": 
+                insufficient_resources += f"{ingredient}"
+            else:
+                insufficient_resources += f", {ingredient}"
+    if not resources_sufficient:
         print(f"Sorry, there is not enough {insufficient_resources}.")
-    return resources_insufficient
+    return resources_sufficient
 
 
 def validate_coins(beverage):
@@ -77,7 +84,7 @@ def validate_coins(beverage):
 
 
 def make_order(beverage, resources):
-    for ingredient in MENU[beverage]["ingredients"].keys():
+    for ingredient in MENU[beverage]["ingredients"]:
         resources[ingredient] -= MENU[beverage]["ingredients"][ingredient]
     return resources
 
@@ -97,24 +104,41 @@ machineIsOn = True
 
 while machineIsOn:
 
+    valid_order = False
+    valid_orders = ["off","report"]
+    for item in MENU:
+        valid_orders.append(item)
+
     customer_order = ""
-    while customer_order not in MENU.keys() or customer_order not in ("off", "report"):
+    while not valid_order:
         prompt_string = "What would you like?\n"
         for item in MENU:
             menu_item = item.title()
             item_cost = MENU[item].get("cost")
-            prompt_string += f"{menu_item}: ${item_cost}"
-        customer_order = input(prompt_string).lower()
+            prompt_string += f"{menu_item}: ${item_cost}\n"
+        customer_order = input(prompt_string + "> ").lower()
+        valid_order = customer_order in valid_orders 
+        if not valid_order:
+            print(f'"{customer_order} is not a valid order."')
     
     if customer_order == "off":
         machineIsOn = False
     elif customer_order == "report":
         generate_report(resources_available, total_coins_received)
-    elif check_resources(customer_order, resources_available):
+    elif check_sufficient_resources(customer_order, resources_available):
         customer_payment = validate_coins(customer_order)
         if customer_payment > 0:
             # make customer's order and decrement resources used
             resources_available = make_order(customer_order, resources_available)
+            print(f"Here is your {customer_order}!")
             total_coins_received += customer_payment
+    # else:
+        # print("We only make it here if we're out of resources.")
+
+    if not customer_order == "off": 
+        order_again = input("Do you have another order? y(es)/n(o)").lower()
+        machineIsOn = order_again in ("yes", "y")
+
+    os.system("clear")
 
 
