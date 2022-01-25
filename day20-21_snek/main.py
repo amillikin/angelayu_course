@@ -33,7 +33,15 @@ while game_active:
         noms.refresh_position()
         sneaky_snek.grow_snek()
     if sneaky_snek.has_collision():
-        game_active = False
-        scoreboard.game_over()
+        scoreboard.reset()
+        sneaky_snek.reset_snek()
+        continue_game = screen.textinput("Continue?", "Would you like to play again? y/n")
+        if continue_game.lower().startswith("n"):
+            scoreboard.record_high_score()
+            game_active = False
+            screen.clear()
+            screen.bye()
+        else:
+            screen.listen()
 
 screen.exitonclick()

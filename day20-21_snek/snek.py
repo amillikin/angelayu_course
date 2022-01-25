@@ -72,3 +72,10 @@ class Snek:
                 if self.head.distance(snek) < 10:
                     return True
             return False
+
+    def reset_snek(self):
+        for snek in self.snek_segments:
+            snek.goto(1000,1000)
+        self.snek_segments.clear()
+        self.create_snek()
+        self.head = self.snek_segments[0]
