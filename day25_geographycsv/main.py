@@ -25,9 +25,8 @@ while game_active:
     answer_state = screen.textinput(title=title_msg, prompt=prompt_msg)
     if answer_state == None:
         game_active = False
-        states_left = list(set(state_list) - set(states_guessed))
-        states_left_dict = {"state": states_left}
-        df = pandas.DataFrame(states_left_dict)
+        states_left = {"state": list(set(state_list) - set(states_guessed))}
+        df = pandas.DataFrame(states_left)
         df.to_csv("states_left.csv")
     else:
         answer_state = answer_state.title()
