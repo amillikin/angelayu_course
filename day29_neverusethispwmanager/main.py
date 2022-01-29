@@ -9,6 +9,7 @@ from tkinter import simpledialog
 import pandas
 import random
 import string
+import json
 import base64
 import os
 from cryptography.fernet import Fernet
@@ -112,19 +113,54 @@ def save_pw():
         messagebox.showerror("Error", "Missing required information")
     else:
         #decrypt_file()
-        new_pw = {"website": entry_website.get(),
-                  "username": entry_un.get(),
-                  "password": entry_pw.get()}
-        pw_df = pandas.DataFrame(new_pw, index=[0])
-        pw_df.to_csv("./pw.db", mode="a", index=False, header=False)
-        #encrypt_file() 
+
+        new_pw = {
+            entry_website.get():
+            {
+                "username": entry_un.get(),
+                "password": entry_pw.get()
+            }
+        }
+        try:
+            with open("pw_db.json", "r", encoding="UTF-8") as data_file:
+                json_data = json.load(data_file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            json_data = new_pw
+        else:
+            json_data.update(new_pw)
+
+        with open("pw_db.json", "w", encoding="UTF-8") as data_file:
+            json.dump(json_data, data_file, indent=4)
+
+        #encrypt_file()
 
         entry_website.delete(0, END)
         entry_un.delete(0, END)
         entry_pw.delete(0, END)
 
 def show_pw():
-    pass
+    try:
+        with open("pw_db.json", encoding="UTF-8") as data_file:
+            json_data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showerror("Error", "No saved password file found.")
+
+
+def find_pw():
+    try:
+        with open("pw_db.json", encoding="UTF-8") as data_file:
+            json_data = json.load(data_file)
+            search_item = entry_website.get()
+            found_un = json_data[search_item]["username"]
+            found_pw = json_data[search_item]["password"]
+            messagebox.showinfo(title="Password Found",
+                                message=f"Your credentials for {search_item} are\n" +
+                                        f"Username: {found_un}\n" +
+                                        f"Password: {found_pw}")
+    except FileNotFoundError:
+        messagebox.showerror("Error", "No saved password file found.")
+    except KeyError:
+        messagebox.showerror("Error", f"Not entry for {search_item} found.")
 
 window = Tk()
 window.title("Don't Use This Password Manager")
@@ -141,6 +177,9 @@ label_website.grid(column=0, row=1, sticky=E)
 entry_website = Entry(width=47)
 entry_website.grid(column=1, row=1, columnspan=2)
 entry_website.focus()
+
+button_search = Button(text="Search", width=15, command=find_pw)
+button_search.grid(column=2, row=1)
 
 label_un = Label(text="Email/Username: ")
 label_un.grid(column=0, row=2, sticky=E)
