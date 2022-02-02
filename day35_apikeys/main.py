@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv(os.environ.get("PYENV"))
 
-
 FROM_EMAIL = os.getenv("APP_EMAIL")
 APP_PASSWORD = os.getenv("APP_PASSWORD")
 TO_EMAIL = os.getenv("APP_RECIPIENT")
@@ -13,8 +12,8 @@ EMAIL_SUBJECT = "Subject:It's gon rain!\n\n"
 EMAIL_BODY = "Bring an umbrella today!"
 
 OW_API_KEY = os.getenv("OWM_API_KEY")
-MY_LAT = 41.487889
-MY_LONG = -81.801783
+MY_LAT = os.getenv("LAT") 
+MY_LONG = os.getenv("LONG")
 EXCLUDES = "current,minutely,daily"
 OW_API_ENDPOINT = "https://api.openweathermap.org/data/2.5/onecall"
 
