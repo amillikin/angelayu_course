@@ -1,6 +1,5 @@
 import requests
 import os
-from datetime import datetime, date
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -13,6 +12,7 @@ class DataManager:
         '''
             Holds the set of data from flight spreadsheet.
         '''
+        load_dotenv(os.environ.get("PYENV"))
         self.EXCEL_CREDS = Credentials.from_service_account_file(
             str(os.environ.get("EXCEL_SA_JSON")),
         )
@@ -44,12 +44,9 @@ class DataManager:
             Leverages excel get and update API for a sheet shared with a
             google cloud service account.
         '''
+        self.data = update_data
         try:
             service = build('sheets', 'v4', credentials=self.EXCEL_CREDS)
-
-            for entry_i in range(len(update_data)):
-                for column_i in range(len(self.data)):
-                    self.data[column_i].append(update_data[entry_i][column_i])
 
             body = {
                 "majorDimension": self.EXCEL_MAJOR_DIMENSION,
