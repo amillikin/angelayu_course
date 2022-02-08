@@ -13,7 +13,6 @@ class FlightData:
         '''
         load_dotenv(os.environ.get("PYENV"))
         self.TEQUILA_KEY = os.getenv("TEQUILA_KEY")
-
     
     def get_cheapest_flight(self, code):
         api_endpoint = "https://tequila-api.kiwi.com/v2/search"
@@ -44,4 +43,7 @@ class FlightData:
             headers=headers
         )
         response.raise_for_status()
-        return response.json()["data"][0]
+        try:
+            return response.json()["data"][0]
+        except IndexError:
+            return None

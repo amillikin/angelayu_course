@@ -10,15 +10,17 @@ class NotificationManager:
         load_dotenv(os.environ.get("PYENV"))
         self.FROM_EMAIL = os.getenv("APP_EMAIL")
         self.APP_PASSWORD = os.getenv("APP_PASSWORD")
-        self.TO_EMAIL = os.getenv("APP_RECIPIENT")
 
 
-    def send_email(self, email_subject, email_body):
+    def send_email(self, email_subject, email_body, recipients):
+        to_addresses = recipients[1]
+        for i in range(2, len(recipients)):
+            to_addresses += f", {recipients[i]}"
         with smtplib.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
             connection.login(user=self.FROM_EMAIL, password=self.APP_PASSWORD)
             connection.sendmail(
                 from_addr=self.FROM_EMAIL,
-                to_addrs=self.TO_EMAIL,
+                to_addrs=to_addresses,
                 msg=(f"{email_subject}{email_body}").encode("utf8"),
             )

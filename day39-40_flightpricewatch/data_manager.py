@@ -17,10 +17,11 @@ class DataManager:
             str(os.environ.get("EXCEL_SA_JSON")),
         )
         self.EXCEL_SHEET_ID = os.getenv("EXCEL_SHEET_ID_39")
-        self.EXCEL_SHEET_RANGE = "prices!A:C"
+        self.EXCEL_FLIGHT_SHEET_RANGE = "prices!A:C"
+        self.EXCEL_USER_SHEET_RANGE = "users!A:C"
         self.EXCEL_MAJOR_DIMENSION = "ROWS"
-        self.EXCEL_COLUMNS = ["City", "IATA Code", "Lowest Price"]
-        self.data = []
+        self.flight_data = []
+        self.user_data = []
         self.read_spreadsheet()
 
 
@@ -29,39 +30,50 @@ class DataManager:
             service = build('sheets', 'v4', credentials=self.EXCEL_CREDS)
 
             sheet = service.spreadsheets()
+            
             result = sheet.values().get(
                 spreadsheetId=self.EXCEL_SHEET_ID,
-                range=self.EXCEL_SHEET_RANGE,
+                range=self.EXCEL_FLIGHT_SHEET_RANGE,
                 majorDimension=self.EXCEL_MAJOR_DIMENSION,
             ).execute()
-            self.data = result.get('values', [])
+            self.flight_data = result.get('values', [])
+            
+            result = sheet.values().get(
+                spreadsheetId=self.EXCEL_SHEET_ID,
+                range=self.EXCEL_USER_SHEET_RANGE,
+                majorDimension=self.EXCEL_MAJOR_DIMENSION,
+            ).execute()
+            self.user_data = result.get('values', [])
         except HttpError as err:
             print(err)
 
 
-    def update_spreadsheet(self, update_data):
+    def update_spreadsheet(self, update_data, data_type):
         '''
             Leverages excel get and update API for a sheet shared with a
             google cloud service account.
         '''
-        self.data = update_data
+        if data_type == "flight":
+            self.flight_data = update_data
+            update_range = self.EXCEL_FLIGHT_SHEET_RANGE
+        elif data_type == "user":
+            self.user_data = update_data
+            update_range = self.EXCEL_USER_SHEET_RANGE
+        else:
+            print(f"Invalid date_type")
+
         try:
             service = build('sheets', 'v4', credentials=self.EXCEL_CREDS)
 
             body = {
                 "majorDimension": self.EXCEL_MAJOR_DIMENSION,
-                "values": self.data
+                "values": update_data
             }
             result = service.spreadsheets().values().update(
                 spreadsheetId=self.EXCEL_SHEET_ID,
                 valueInputOption="RAW",
-                range=self.EXCEL_SHEET_RANGE,
+                range=update_range,
                 body=body
             ).execute()
         except HttpError as err:
             print(err)
-
-
-    def to_dict(self):
-        data_dict = {key: None for key in self.EXCEL_COLUMNS}
-        
