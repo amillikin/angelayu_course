@@ -1,0 +1,36 @@
+/*
+ * Color Palette
+ * #8a04ed 	rgb(138, 4, 237)
+	#ef9af2 	rgb(239, 154, 242)
+  #240c76 	rgb(36, 12, 118)
+	#570296 	rgb(87, 2, 150)
+	#831187 	rgb(131, 17, 135)
+	#0c0c0c 	rgb(12, 12, 12)
+ */
+.multicolortext {
+  background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body {
+    background-color: #0c0c0c;
+    color: #ef9af2;
+}
+
+hr {
+    border-style: none;
+    border-top-style: ridge;
+    border-color: grey;
+    border-width: 6px;
+}
+
+h1 {  
+  color: #8a04ed;
+}
+
+h3 {
+  color: #570296;
+}
