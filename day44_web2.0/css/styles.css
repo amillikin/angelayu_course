@@ -1,0 +1,116 @@
+/*
+ * Color Palette
+ * #8a04ed 	rgb(138, 4, 237)
+	#ef9af2 	rgb(239, 154, 242)
+  #240c76 	rgb(36, 12, 118)
+	#570296 	rgb(87, 2, 150)
+	#831187 	rgb(131, 17, 135)
+	#0c0c0c 	rgb(12, 12, 12)
+ */
+
+body {
+  margin: 0; 
+  color: white;
+  font-family: 'Chakra Petch', sans-serif;
+  text-align: center;
+}
+
+h1 {
+  margin: 50px auto 0 auto;
+  font-family: 'Indie Flower', cursive;
+  font-size: 5.625rem;
+}
+
+h2 {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 2rem;
+}
+
+h3 {
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+p {
+  line-height: 2;
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+hr {
+  border: dotted #240c76 6px;
+  border-bottom: none;
+  width: 4%;
+  margin: 50px auto;
+}
+
+a {
+  color: #0c0c0c; 
+  font-family: 'Chakra Petch', sans-serif;
+  margin: 10px 10px;
+  text-decoration: none;
+}
+
+a.hover {
+  color: #570296; 
+}
+
+.top-container {
+  background-color: #240c76; 
+  padding-top: 100px;
+  position: relative;
+}
+
+.middle-container {
+  background-color: #570296;
+  padding: 100px 0 100px;
+}
+
+.bottom-container {
+  background-color: #ef9af2;
+  padding: 50px 0 20px;
+}
+
+.top-cloud {
+  position: absolute;
+  right: 40px;
+  top: 50px;
+}
+
+.bot-cloud {
+  position: absolute;
+  left: 250px;
+  bottom: 300px;
+}
+
+.intro {
+  width: 30%;
+  margin: auto;
+}
+
+.copyright {
+  color: #0c0c0c;
+}
+
+.DC {
+  width: 15%;
+  height: auto;
+}
+
+.image2 {
+  width: 25%;
+  height: auto; 
+  float: left;
+  margin-right: 30px;
+}
+
+.image3 {
+  width: 25%;
+  height: auto; 
+  float: right;
+  margin-left: 30px;
+}
+
+.skill-row { 
+  width: 50%;
+  margin: 100px auto 100px auto;
+  text-align: left;
+}
