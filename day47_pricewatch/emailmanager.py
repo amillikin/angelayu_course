@@ -11,15 +11,12 @@ class EmailManager:
         self.APP_PASSWORD = os.getenv("APP_PASSWORD")
 
 
-    def send_email(self, email_subject, email_body, recipients):
-        to_addresses = recipients[1]
-        for i in range(2, len(recipients)):
-            to_addresses += f", {recipients[i]}"
+    def send_email(self, email_subject, email_body, recipient):
         with smtplib.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
             connection.login(user=self.FROM_EMAIL, password=self.APP_PASSWORD)
             connection.sendmail(
                 from_addr=self.FROM_EMAIL,
-                to_addrs=to_addresses,
+                to_addrs=recipient,
                 msg=(f"{email_subject}{email_body}").encode("utf8"),
             )
