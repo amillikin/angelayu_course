@@ -33,7 +33,7 @@ class CookieTime:
     def buy_stuff(self):
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".enabled")
         if len(elements) > 0:
-            elements[len(elements)-1].click()
+            elements[-1].click()
 
 
     def reset_time(self):
