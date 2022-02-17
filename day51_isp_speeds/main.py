@@ -14,7 +14,7 @@ TWITTER_E = os.getenv("TWITTER_EMAIL")
 TWITTER_U = os.getenv("TWITTER_UN")
 TWITTER_P = os.getenv("TWITTER_PASS")
 TWITTER_URL = "https://twitter.com"
-EXPECTED_DOWN = 100
+EXPECTED_DOWN = 900.0
 EXPECTED_UP = 35
 ISP_NAME = "<insert ISP>"
 SPEEDTEST_URL = "https://www.speedtest.net/"
@@ -90,8 +90,8 @@ class InternetSpeedTwitterBot:
         time_out = 5
         while try_again:
             try:
-                self.current_down = self.driver.find_element(By.CLASS_NAME, "download-speed").text
-                self.current_up = self.driver.find_element(By.CLASS_NAME, "upload-speed").text
+                self.current_down = int(self.driver.find_element(By.CLASS_NAME, "download-speed").text)
+                self.current_up = int(self.driver.find_element(By.CLASS_NAME, "upload-speed").text)
                 try_again = False
             except NoSuchElementException as e:
                 print(f"{e}")
