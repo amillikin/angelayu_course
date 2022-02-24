@@ -27,7 +27,7 @@ def get_index():
 def get_blog(id):
     return render_template("post.html",
                            post=post_list[id-1])
-    
+
 
 if __name__ == "__main__":
     app.run(debug=True)
