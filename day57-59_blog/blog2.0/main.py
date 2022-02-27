@@ -1,7 +1,8 @@
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime
 from post import Post
+from emailmanager import EmailManager
 
 app = Flask(__name__)
 
@@ -30,15 +31,32 @@ def get_about():
     return render_template("about.html")
 
 
-@app.route("/contact")
-def get_contact():
-    return render_template("contact.html")
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        message = request.form["message"]
+        email_mgr = EmailManager()
+        email_mgr.send_email(
+            recipient = "aaron@millikin.dev",
+            email_subject = "Subject:Blog Contact Submission\n\n",
+            email_body = f"""
+            New Submission from {name}!\n
+            Email: {email}\n
+            Phone: {phone}\n
+            Message: {message}
+            """
+        )
+        return render_template("contact.html", msg_sent=True)
+    return render_template("contact.html", msg_sent=False)
 
 
-@app.route("/blog/<int:id>")
-def get_blog(id):
+@app.route("/blog/<int:post_id>")
+def get_blog(post_id):
     return render_template("post.html",
-                           post=post_list[id-1])
+                           post=post_list[post_id-1])
 
 
 if __name__ == "__main__":
