@@ -1,15 +1,12 @@
 import argparse
 import sys
-from text_parser import TextParser
-from wav_parser import WavParser
+from file_parser import FileParser
 from user_mode import UserMode
 
 
 parser = argparse.ArgumentParser()
 
 group = parser.add_mutually_exclusive_group()
-#mode_group = parser.add_mutually_exclusive_group()
-#modes_group = parser.add_argument_group()
 
 group.add_argument(
     "-i",
@@ -22,8 +19,7 @@ group.add_argument(
     "--textfile",
     help=
     """
-    Accepts a plaintext file, outputs a wav file of the same name
-    or if specified as the second positional argument.
+    
     """,
     action="store_true"
 )
@@ -37,7 +33,7 @@ group.add_argument(
     """,
     action="store_true"
 )
-#modes_group.add_argument_group(mode_group)
+
 group.add_argument("in_file",
                    nargs="?",
                    type=argparse.FileType('r'),
