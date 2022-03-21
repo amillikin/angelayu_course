@@ -9,12 +9,24 @@ import re
 ALLOWED_MORSE = re.compile(r'^(?:[.-]{1,5})(?:\s+(?:[.-]{1,5}|\|))*$')
 ALLOWED_TEXT = re.compile(r'[A-Za-z0-9\s]*')
 
-UNIT_LEN = 100 #milliseconds
+VOLUME = 32767.0 #max 16-bit int
+SAMPLE_RATE = 44100.0 #Hz
+FREQUENCY = 1240.0 #Hz
+UNIT_LEN = .27 #seconds
 DOT = 1 * UNIT_LEN # dit
 DASH = 3 * UNIT_LEN # dah
 I_PAUSE = 1 * UNIT_LEN # inner pause
-L_PAUSE = 3 * UNIT_LEN # letter pause
-W_PAUSE = 7 * UNIT_LEN # word pause
+L_PAUSE = 2 * UNIT_LEN # letter pause: followed by I_PAUSE, so 2+1=3
+W_PAUSE = 0 * UNIT_LEN # word pause: 
+                       # surrounded by L_PAUSE, followed by I_PAUSE
+                       # so 3+1+3=7u, don't technically need a frame here 
+
+SIGNAL_CONVERSION = {
+    ".": DOT,
+    "-": DASH,
+    " ": L_PAUSE,
+    "|": W_PAUSE, 
+}
 
 TEXT_TO_MORSE = {
     "A": ".-",
