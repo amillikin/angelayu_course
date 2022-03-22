@@ -1,18 +1,21 @@
 import re
 
-# Morse Code Durations:
+# Morse Code Durations per wiki:
 # Length of a dot is one unit (dit)
 # Length of a dash is three unit (dah)
 # Space between each part of the one character is one unit
 # Space between letters is three units
 # Space between words is seven units
+
+# Some additional information on timing
+# http://www.arrl.org/files/file/Technology/x9004008.pdf
 ALLOWED_MORSE = re.compile(r'^(?:[.-]{1,5})(?:\s+(?:[.-]{1,5}|\|))*$')
 ALLOWED_TEXT = re.compile(r'[A-Za-z0-9\s]*')
 
 VOLUME = 32767.0 #max 16-bit int
 SAMPLE_RATE = 44100.0 #Hz
 FREQUENCY = 1240.0 #Hz
-UNIT_LEN = .27 #seconds
+UNIT_LEN = .27 #seconds 
 DOT = 1 * UNIT_LEN # dit
 DASH = 3 * UNIT_LEN # dah
 I_PAUSE = 1 * UNIT_LEN # inner pause
