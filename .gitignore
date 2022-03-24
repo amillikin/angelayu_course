@@ -157,3 +157,4 @@ cython_debug/
 # Custom Ignores
 day81_morse/*.txt
 day81_morse/*.wav
+praw.ini
