@@ -5,8 +5,7 @@ from gtts import gTTS
 
 
 def convert_pdf(file):
-    text = extract_text(pdf_file=file,
-                          maxpages=2)
+    text = extract_text(pdf_file=file)
     tts = gTTS(text)
     tts.save("test.mp3")
 
