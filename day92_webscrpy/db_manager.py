@@ -2,11 +2,11 @@ from sqlalchemy import *
 from sqlalchemy_utils import database_exists, create_database
 from dotenv import dotenv_values
 
-class DBManager():
+class DBManager:
     def __init__(self):
         self.db_check()
         self.config = dotenv_values()
-        self.engine = create_engine(config["URL"],
+        self.engine = create_engine(self.config["URL"],
                             echo=True,
                             future=True)
 
@@ -62,4 +62,3 @@ class DBManager():
                                     nullable=False)
                             )
             watchlist.create(self.engine)
-
